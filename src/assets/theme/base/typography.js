@@ -64,6 +64,7 @@ const typography = {
   fontWeightRegular: baseProperties.fontWeightRegular,
   fontWeightMedium: baseProperties.fontWeightMedium,
   fontWeightBold: baseProperties.fontWeightBold,
+  fontFamily: "Montserrat, sans-serif",
 
   h1: {
     fontSize: pxToRem(48),

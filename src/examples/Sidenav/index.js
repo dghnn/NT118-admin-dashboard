@@ -56,10 +56,8 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   let textColor = "white";
 
   if (transparentSidenav || (whiteSidenav && !darkMode)) {
-    textColor = "dark";
-  } else if (whiteSidenav && darkMode) {
-    textColor = "inherit";
-  }
+    textColor = "#990011";
+  } else textColor = "#000000";
 
   const closeSidenav = () => setMiniSidenav(dispatch, true);
 
@@ -167,7 +165,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
           >
             <MDTypography component="h6" variant="button" fontWeight="medium" color={textColor}>
-              {brandName}
+              CINE POPLE
             </MDTypography>
           </MDBox>
         </MDBox>
@@ -179,19 +177,6 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         }
       />
       <List>{renderRoutes}</List>
-      <MDBox p={2} mt="auto">
-        <MDButton
-          component="a"
-          href="https://www.creative-tim.com/product/material-dashboard-pro-react"
-          target="_blank"
-          rel="noreferrer"
-          variant="gradient"
-          color={sidenavColor}
-          fullWidth
-        >
-          upgrade to pro
-        </MDButton>
-      </MDBox>
     </SidenavRoot>
   );
 }
