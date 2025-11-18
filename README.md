@@ -1,5 +1,4 @@
-admin-dashboard wip
+# Admin Dashboard (WIP)
 
-```npm start
-
-http://localhost:3000
+```bash
+npm start
