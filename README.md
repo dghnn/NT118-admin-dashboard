@@ -1,1 +1,4 @@
-admin-dashboard wip
+# Admin Dashboard (WIP)
+
+```bash
+npm start
