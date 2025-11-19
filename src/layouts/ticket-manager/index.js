@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import MDBox from "components/MDBox";
-import DataTable from "examples/Tables/DataTable";
+import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
+import DataTable from "examples/Tables/DataTable";
 
 import ticketsData from "./data/ticketsData";
 
@@ -23,33 +25,144 @@ export default function TicketManager() {
     }
   };
 
+  const StatusCell = ({ row }) => {
+    const status = row.original.status;
+    let color;
+    switch (status) {
+      case "Paid":
+        color = "success";
+        break;
+      case "Unpaid":
+        color = "warning";
+        break;
+      case "Refund":
+        color = "info";
+        break;
+      case "Refunded":
+        color = "secondary";
+        break;
+      case "Expired":
+        color = "error";
+        break;
+      default:
+        color = "dark";
+    }
+    return (
+      <MDTypography variant="button" fontWeight="medium" color={color}>
+        {status}
+      </MDTypography>
+    );
+  };
+
+  StatusCell.propTypes = {
+    row: PropTypes.shape({
+      original: PropTypes.shape({
+        status: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
+  };
+
   const columns = [
-    { Header: "Mã vé", accessor: "id", align: "center" },
-    { Header: "Phim", accessor: "movie", align: "left" },
-    { Header: "Rạp", accessor: "cinema", align: "left" },
-    { Header: "Phòng", accessor: "room", align: "center" },
-    { Header: "Suất chiếu", accessor: "showtime", align: "center" },
-    { Header: "Ghế", accessor: "seat", align: "center" },
-    { Header: "Giá vé", accessor: "price", align: "right" },
-    { Header: "Trạng thái", accessor: "status", align: "center" },
-    { Header: "Khách hàng", accessor: "customer", align: "left" },
-    { Header: "Hành động", accessor: "action", align: "center" },
+    {
+      Header: (
+        <MDTypography variant="caption" color="primary" fontWeight="bold">
+          Ticket ID
+        </MDTypography>
+      ),
+      accessor: "id",
+      align: "center",
+    },
+    {
+      Header: (
+        <MDTypography variant="caption" color="primary" fontWeight="bold">
+          Movie
+        </MDTypography>
+      ),
+      accessor: "movie",
+      align: "left",
+    },
+    {
+      Header: (
+        <MDTypography variant="caption" color="primary" fontWeight="bold">
+          Cinema
+        </MDTypography>
+      ),
+      accessor: "cinema",
+      align: "left",
+    },
+    {
+      Header: (
+        <MDTypography variant="caption" color="primary" fontWeight="bold">
+          Time
+        </MDTypography>
+      ),
+      accessor: "showtime",
+      align: "center",
+    },
+    {
+      Header: (
+        <MDTypography variant="caption" color="primary" fontWeight="bold">
+          Seat
+        </MDTypography>
+      ),
+      accessor: "seat",
+      align: "center",
+    },
+    {
+      Header: (
+        <MDTypography variant="caption" color="primary" fontWeight="bold">
+          Price
+        </MDTypography>
+      ),
+      accessor: "price",
+      align: "right",
+    },
+    {
+      Header: (
+        <MDTypography variant="caption" color="primary" fontWeight="bold">
+          Customer
+        </MDTypography>
+      ),
+      accessor: "customer",
+      align: "left",
+    },
+    {
+      Header: (
+        <MDTypography variant="caption" color="primary" fontWeight="bold">
+          Status
+        </MDTypography>
+      ),
+      accessor: "status",
+      align: "center",
+      Cell: StatusCell,
+    },
+    {
+      Header: (
+        <MDTypography variant="caption" color="primary" fontWeight="bold">
+          Action
+        </MDTypography>
+      ),
+      accessor: "action",
+      align: "center",
+    },
   ];
 
-  const rows = tickets.map((t) => ({
-    ...t,
-    price: t.price.toLocaleString("vi-VN") + "₫",
+  const rows = tickets.map((ticket) => ({
+    ...ticket,
+    price: ticket.price.toLocaleString("vi-VN") + "₫",
     action: (
-      <>
-        <MDButton size="small" onClick={() => handleView(t)} sx={{ mr: 1 }}>
-          Xem
-        </MDButton>
-        {t.status !== "Đã hủy" && (
-          <MDButton size="small" color="error" onClick={() => handleCancel(t.id)}>
-            Hủy
+      <MDBox display="flex" justifyContent="center" gap={1}>
+        {ticket.status !== "Đã hủy" && (
+          <MDButton
+            variant="gradient"
+            color="error"
+            size="small"
+            onClick={() => handleCancel(ticket.id)}
+          >
+            Delete
           </MDButton>
         )}
-      </>
+      </MDBox>
     ),
   }));
 
@@ -58,11 +171,15 @@ export default function TicketManager() {
       <DashboardNavbar />
       <MDBox pt={6} pb={3}>
         <MDBox mb={3}>
+          <MDTypography variant="h4" fontWeight="bold" mb={2}>
+            Tickets
+          </MDTypography>
+
           <DataTable
             table={{ columns, rows }}
             isSorted={false}
-            entriesPerPage={true}
-            showTotalEntries={true}
+            entriesPerPage={false} // bỏ show entries
+            showTotalEntries={false}
             noEndBorder
           />
         </MDBox>

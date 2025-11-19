@@ -97,6 +97,11 @@ const colors = {
   },
 
   gradients: {
+    darkred: {
+      main: "#990011",
+      state: "#7a000e",
+    },
+
     primary: {
       main: "#f07ba2ff",
       state: "#ecb6caff",

@@ -4,22 +4,14 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Icon from "@mui/material/Icon";
 
-// Components
 import MDBox from "components/MDBox";
 import Sidenav from "examples/Sidenav";
 import Configurator from "examples/Configurator";
 
-// Themes
 import theme from "assets/theme";
 import themeDark from "assets/theme-dark";
-
-// Routes
 import routes from "routes";
-
-// Context
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
-
-// Brand logos
 import brandWhite from "assets/images/logo-light.jpg";
 import brandDark from "assets/images/logo-dark.jpg";
 
@@ -37,40 +29,48 @@ export default function App() {
 
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const { pathname } = useLocation();
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
-  // Sidebar hover open/close
+  useEffect(() => {
+    document.documentElement.scrollTop = 0;
+    document.scrollingElement.scrollTop = 0;
+  }, [pathname]);
+
   const handleOnMouseEnter = () => {
     if (miniSidenav && !onMouseEnter) {
       setMiniSidenav(dispatch, false);
       setOnMouseEnter(true);
     }
   };
-
   const handleOnMouseLeave = () => {
     if (onMouseEnter) {
       setMiniSidenav(dispatch, true);
       setOnMouseEnter(false);
     }
   };
-
-  // Toggle configurator panel
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
-
-  // Scroll lên đầu khi route thay đổi
-  useEffect(() => {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-  }, [pathname]);
 
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
       if (route.collapse) return getRoutes(route.collapse);
-      if (route.route)
-        return <Route key={route.key} path={route.route} element={route.component} />;
+      if (route.route) {
+        return (
+          <Route
+            key={route.key || route.route}
+            path={route.route}
+            element={
+              route.private && !isLoggedIn ? (
+                <Navigate to="/authentication/sign-in" replace />
+              ) : (
+                route.component
+              )
+            }
+          />
+        );
+      }
       return null;
     });
 
-  // Nút cấu hình (settings)
   const configsButton = (
     <MDBox
       display="flex"
@@ -95,17 +95,19 @@ export default function App() {
     </MDBox>
   );
 
+  // Ẩn Sidebar & Configurator nếu ở trang sign-in hoặc chưa login
+  const hideSidebar = pathname.startsWith("/authentication/sign-in") || !isLoggedIn;
+
   return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
 
-      {/* Sidebar & configurator */}
-      {layout === "dashboard" && (
+      {layout === "dashboard" && !hideSidebar && (
         <>
           <Sidenav
             color={sidenavColor}
             brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-            brandName="Material Dashboard 2"
+            brandName="CINE PEOPLE"
             routes={routes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
@@ -115,10 +117,12 @@ export default function App() {
         </>
       )}
 
-      {/* Routes */}
       <Routes>
         {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/dashboard" />} />
+        <Route
+          path="*"
+          element={<Navigate to={isLoggedIn ? "/dashboard" : "/authentication/sign-in"} replace />}
+        />
       </Routes>
     </ThemeProvider>
   );
