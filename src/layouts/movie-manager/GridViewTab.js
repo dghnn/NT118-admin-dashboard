@@ -75,9 +75,9 @@ function GridViewTab({ movies, onEdit, onDelete }) {
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   display: "-webkit-box",
-                  WebkitLineClamp: 3, // tối đa 2 dòng, nếu muốn không giới hạn thì bỏ dòng này
+                  WebkitLineClamp: 3,
                   WebkitBoxOrient: "vertical",
-                  borderBottom: "3px solid #cececeff", // border dày hơn
+                  borderBottom: "3px solid #cececeff",
                   pb: 0.5,
                 }}
               >

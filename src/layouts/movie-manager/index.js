@@ -36,7 +36,7 @@ function MovieManager() {
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 9;
+  const itemsPerPage = 3;
   const totalPages = Math.ceil(movies.length / itemsPerPage);
 
   const paginatedMovies = movies.slice(
