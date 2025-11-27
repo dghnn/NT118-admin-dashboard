@@ -11,6 +11,13 @@ import MDButton from "components/MDButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
+const formatDuration = (minutes) => {
+  if (!minutes) return "";
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return `${h > 0 ? h + "h " : ""}${m}m`;
+};
+
 function RowViewTab({ movies, onEdit, onDelete }) {
   return (
     <MDBox display="flex" flexDirection="column" gap={2}>
@@ -36,7 +43,7 @@ function RowViewTab({ movies, onEdit, onDelete }) {
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
-                borderBottom: "3px solid #cececeff",
+                borderBottom: "3px solid #e5e5e5ff",
                 pb: 0.5,
               }}
             >
@@ -56,7 +63,21 @@ function RowViewTab({ movies, onEdit, onDelete }) {
                 Duration:
               </MDTypography>
               <MDTypography fontSize={11} color="text">
-                {movie.duration}
+                {formatDuration(movie.duration)}
+              </MDTypography>
+
+              <MDTypography fontSize={11} fontWeight="bold" color="text" ml={1}>
+                Director:
+              </MDTypography>
+              <MDTypography fontSize={11} color="text">
+                {movie.director}
+              </MDTypography>
+
+              <MDTypography fontSize={11} fontWeight="bold" color="text" ml={1}>
+                Release:
+              </MDTypography>
+              <MDTypography fontSize={11} color="text">
+                {movie.releaseDate}
               </MDTypography>
 
               <MDTypography fontSize={11} fontWeight="bold" color="text" ml={1}>

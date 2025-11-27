@@ -14,20 +14,18 @@ import MDButton from "components/MDButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
+const formatDuration = (minutes) => {
+  if (!minutes) return "";
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return `${h > 0 ? h + "h " : ""}${m}m`;
+};
+
 function GridViewTab({ movies, onEdit, onDelete }) {
   return (
     <Grid container spacing={2}>
       {movies.map((movie) => (
-        <Grid
-          key={movie.id}
-          item
-          xs={12}
-          sm={6}
-          md={4}
-          lg={6}
-          xl={4} // 5 ô một hàng
-          sx={{ display: "flex" }}
-        >
+        <Grid key={movie.id} item xs={12} sm={6} md={4} lg={6} xl={3} sx={{ display: "flex" }}>
           <MDBox
             display="flex"
             flexDirection="row"
@@ -99,7 +97,7 @@ function GridViewTab({ movies, onEdit, onDelete }) {
                   Duration:
                 </MDTypography>
                 <MDTypography fontSize={10} color="text">
-                  {movie.duration}
+                  {formatDuration(movie.duration)}
                 </MDTypography>
               </MDBox>
 
