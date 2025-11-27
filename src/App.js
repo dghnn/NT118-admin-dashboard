@@ -31,6 +31,9 @@ export default function App() {
   const { pathname } = useLocation();
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
+  // Tự ẩn sidebar khi ở trang login
+  const hideSidebar = pathname.includes("/sign-in");
+
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -42,32 +45,33 @@ export default function App() {
       setOnMouseEnter(true);
     }
   };
+
   const handleOnMouseLeave = () => {
     if (onMouseEnter) {
       setMiniSidenav(dispatch, true);
       setOnMouseEnter(false);
     }
   };
+
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
 
+  // Xử lý private route
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
       if (route.collapse) return getRoutes(route.collapse);
+
       if (route.route) {
         return (
           <Route
             key={route.key || route.route}
             path={route.route}
             element={
-              route.private && !isLoggedIn ? (
-                <Navigate to="/authentication/sign-in" replace />
-              ) : (
-                route.component
-              )
+              route.private && !isLoggedIn ? <Navigate to="/sign-in" replace /> : route.component
             }
           />
         );
       }
+
       return null;
     });
 
@@ -95,9 +99,6 @@ export default function App() {
     </MDBox>
   );
 
-  // Ẩn Sidebar & Configurator nếu ở trang sign-in hoặc chưa login
-  const hideSidebar = pathname.startsWith("/authentication/sign-in") || !isLoggedIn;
-
   return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
@@ -119,9 +120,11 @@ export default function App() {
 
       <Routes>
         {getRoutes(routes)}
+
+        {/* Xử lý redirect mặc định */}
         <Route
           path="*"
-          element={<Navigate to={isLoggedIn ? "/dashboard" : "/authentication/sign-in"} replace />}
+          element={<Navigate to={isLoggedIn ? "/dashboard" : "/sign-in"} replace />}
         />
       </Routes>
     </ThemeProvider>

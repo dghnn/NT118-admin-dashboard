@@ -1,9 +1,11 @@
-// routes/index.js
 import Dashboard from "layouts/dashboard";
 import MovieManager from "layouts/movie-manager";
+import Showtimes from "layouts/showtimes";
+import CinemaManager from "layouts/cinemas";
 import Customer from "layouts/user-manager";
 import Ticket from "layouts/ticket-manager";
 import SignIn from "layouts/sign-in";
+
 import Icon from "@mui/material/Icon";
 
 const routes = [
@@ -14,6 +16,7 @@ const routes = [
     route: "/dashboard",
     component: <Dashboard />,
     private: true,
+    key: "dashboard",
   },
   {
     type: "collapse",
@@ -22,14 +25,33 @@ const routes = [
     route: "/movie-manager",
     component: <MovieManager />,
     private: true,
+    key: "movie-manager",
   },
   {
     type: "collapse",
-    name: "Customer",
+    name: "Showtimes",
+    icon: "event",
+    route: "/showtimes",
+    component: <Showtimes />,
+    private: true,
+    key: "showtimes",
+  },
+  {
+    type: "collapse",
+    name: "Cinemas",
+    key: "cinema-manager",
+    icon: <Icon fontSize="small">theaters</Icon>,
+    route: "/cinemas",
+    component: <CinemaManager />,
+  },
+  {
+    type: "collapse",
+    name: "Customers",
     icon: "groups",
     route: "/user-loyalty",
     component: <Customer />,
     private: true,
+    key: "customer",
   },
   {
     type: "collapse",
@@ -38,14 +60,21 @@ const routes = [
     route: "/ticket-manager",
     component: <Ticket />,
     private: true,
+    key: "ticket-manager",
   },
+
   {
-    type: "collapse",
-    name: "Log Out",
+    type: "logout",
+    name: "Logout",
     icon: "logout",
-    key: "sign-in",
-    route: "/authentication/sign-in",
+    key: "logout",
+  },
+
+  // Trang login
+  {
+    route: "/sign-in",
     component: <SignIn />,
+    key: "sign-in",
   },
 ];
 
